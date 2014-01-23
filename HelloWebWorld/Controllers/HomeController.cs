@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using HelloWebWorld.Models;
+
 namespace HelloWebWorld.Controllers
 {
     public class HomeController : Controller
@@ -27,6 +29,16 @@ namespace HelloWebWorld.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public JsonResult GetMessage(UserData myData)
+        {
+            myData.UserName += " (verified)";
+            var dt = DateTime.Now.AddYears(-1);
+            DateTime.TryParse(myData.RequestedDate, out dt);
+            myData.RequestedDate = dt.ToLongDateString();
+            myData.ServerDate = DateTime.Now.ToShortDateString();
+            return Json(myData, JsonRequestBehavior.AllowGet);
         }
     }
 }
